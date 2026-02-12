@@ -7,10 +7,6 @@ const getRecipeBtnActive = document.getElementById('get-recipe-btn-active');
 const backBtn = document.getElementById('back-btn');
 const newRecipeBtn = document.getElementById('new-recipe-btn');
 const backFromRecipeBtn = document.getElementById('back-from-recipe-btn');
-const tabIngredients = document.getElementById('tab-ingredients');
-const tabInstructions = document.getElementById('tab-instructions');
-const tabIngredientsContent = document.getElementById('tab-ingredients-content');
-const tabInstructionsContent = document.getElementById('tab-instructions-content');
 
 let currentMood = null;
 let currentMealType = null;
@@ -119,12 +115,6 @@ function showRecipe(recipe) {
   excludedIds.push(recipe.id);
   selectStep.classList.add('hidden');
   recipeStep.classList.remove('hidden');
-
-  // Reset to Ingredients tab
-  tabIngredients.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#7D55FA] text-white';
-  tabInstructions.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#F0F0F0] text-[#1D1F25]';
-  tabIngredientsContent.classList.remove('hidden');
-  tabInstructionsContent.classList.add('hidden');
 }
 
 function getRecipe() {
@@ -146,21 +136,6 @@ function goBack() {
   recipeStep.classList.add('hidden');
   selectStep.classList.remove('hidden');
 }
-
-// Tab switching
-tabIngredients.addEventListener('click', () => {
-  tabIngredients.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#7D55FA] text-white';
-  tabInstructions.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#F0F0F0] text-[#1D1F25]';
-  tabIngredientsContent.classList.remove('hidden');
-  tabInstructionsContent.classList.add('hidden');
-});
-
-tabInstructions.addEventListener('click', () => {
-  tabInstructions.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#7D55FA] text-white';
-  tabIngredients.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#F0F0F0] text-[#1D1F25]';
-  tabInstructionsContent.classList.remove('hidden');
-  tabIngredientsContent.classList.add('hidden');
-});
 
 getRecipeBtnActive.addEventListener('click', getRecipe);
 backBtn.addEventListener('click', goBack);

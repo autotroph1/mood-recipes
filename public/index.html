@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Recipes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Source Sans 3', sans-serif; }
+    h1 { font-family: 'Playfair Display', serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-amber-50">
+  <div class="max-w-2xl mx-auto px-6 py-12">
+    <h1 class="text-4xl font-bold text-amber-900 text-center mb-2">Mood Recipes</h1>
+    <p class="text-amber-700 text-center mb-10">Pick your mood, get a recipe</p>
+
+    <div id="mood-step" class="mb-10">
+      <p class="text-amber-800 font-semibold mb-3">How are you feeling?</p>
+      <div class="flex flex-wrap gap-2" id="mood-buttons"></div>
+    </div>
+
+    <div id="recipe-step" class="hidden">
+      <button id="back-btn" class="text-amber-700 hover:text-amber-900 font-medium mb-6 flex items-center gap-2">
+        ← Choose different mood
+      </button>
+      <div id="recipe-card" class="bg-white rounded-2xl shadow-lg p-8 border border-amber-100">
+        <h2 id="recipe-name" class="text-2xl font-bold text-amber-900 mb-2"></h2>
+        <p id="recipe-desc" class="text-amber-700 mb-6"></p>
+        <div class="mb-6">
+          <h3 class="font-semibold text-amber-900 mb-2">Ingredients</h3>
+          <p id="recipe-ingredients" class="text-amber-800 whitespace-pre-line"></p>
+        </div>
+        <div class="mb-8">
+          <h3 class="font-semibold text-amber-900 mb-2">Instructions</h3>
+          <p id="recipe-instructions" class="text-amber-800 whitespace-pre-line"></p>
+        </div>
+        <button id="new-recipe-btn" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition">
+          Get another recipe
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

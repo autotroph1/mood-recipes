@@ -6,14 +6,17 @@ A simple mood-based recipe recommendation app. Pick your mood, get a recipe. Don
 
 ```bash
 npm install
-npm run seed    # Seed the database with sample recipes
-npm start       # Start the server
+npm start
 ```
 
 Open http://localhost:3000 in your browser.
 
+## Adding recipes
+
+Edit `data.js` — each recipe needs: name, description, mood, ingredients, instructions.
+
 ## Tech Stack
 
 - **Backend:** Express.js
-- **Database:** SQLite (better-sqlite3)
+- **Data:** In-memory (data.js) — no database, works on Render
 - **Frontend:** HTML, CSS (Tailwind), vanilla JavaScript

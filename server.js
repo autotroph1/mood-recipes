@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const db = require('./db');
+const recipes = require('./data');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,21 +22,13 @@ app.get('/api/recipes/:mood', (req, res) => {
     return res.status(400).json({ error: 'Invalid mood' });
   }
 
-  let query = 'SELECT * FROM recipes WHERE mood = ?';
-  const params = [mood];
+  let filtered = recipes.filter(r => r.mood === mood && !exclude.includes(r.id));
 
-  if (exclude.length > 0) {
-    query += ` AND id NOT IN (${exclude.map(() => '?').join(',')})`;
-    params.push(...exclude);
-  }
-
-  const recipes = db.prepare(query).all(...params);
-
-  if (recipes.length === 0) {
+  if (filtered.length === 0) {
     return res.status(404).json({ error: 'No more recipes for this mood' });
   }
 
-  const randomRecipe = recipes[Math.floor(Math.random() * recipes.length)];
+  const randomRecipe = filtered[Math.floor(Math.random() * filtered.length)];
   res.json(randomRecipe);
 });
 

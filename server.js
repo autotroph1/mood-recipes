@@ -28,10 +28,16 @@ app.get('/api/recipes/:mood', (req, res) => {
     return res.status(400).json({ error: 'Invalid mood' });
   }
 
-  let filtered = recipes.filter(r => {
-    if (r.mood !== mood || exclude.includes(r.id)) return false;
+  const matchMood = (r) => (r.moods || [r.mood]).includes(mood);
+  const matchMealType = (r) => {
+    const types = r.mealTypes || [r.mealType].filter(Boolean);
     if (!mealType || mealType === 'any') return true;
-    return r.mealType === mealType || r.mealType === 'any';
+    return types.includes(mealType) || types.includes('any');
+  };
+
+  let filtered = recipes.filter(r => {
+    if (!matchMood(r) || exclude.includes(r.id)) return false;
+    return matchMealType(r);
   });
 
   if (filtered.length === 0) {

@@ -40,7 +40,10 @@
         ← Change mood or meal type
       </button>
       <div id="recipe-card" class="bg-white rounded-2xl shadow-lg overflow-hidden border border-amber-100">
-        <img id="recipe-image" src="" alt="" class="w-full h-64 object-cover">
+        <div class="relative">
+          <img id="recipe-image" src="" alt="" class="w-full h-64 object-cover">
+          <p id="recipe-image-credit" class="absolute bottom-2 right-2 text-xs text-white/90 bg-black/40 px-2 py-1 rounded"></p>
+        </div>
         <div class="p-8">
         <h2 id="recipe-name" class="text-2xl font-bold text-amber-900 mb-2"></h2>
         <p id="recipe-desc" class="text-amber-700 mb-6"></p>

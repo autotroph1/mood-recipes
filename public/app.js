@@ -91,6 +91,10 @@ async function fetchRecipe(mood, mealType, exclude = []) {
 }
 
 function showRecipe(recipe) {
+  const imgEl = document.getElementById('recipe-image');
+  imgEl.src = recipe.image || '';
+  imgEl.alt = recipe.name;
+  imgEl.style.display = recipe.image ? 'block' : 'none';
   document.getElementById('recipe-name').textContent = recipe.name;
   document.getElementById('recipe-desc').textContent = recipe.description || '';
   document.getElementById('recipe-ingredients').textContent = recipe.ingredients;

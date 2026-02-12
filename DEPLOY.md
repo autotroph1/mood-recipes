@@ -38,6 +38,23 @@ Paste and run them in your terminal. You’ll be asked to sign in to GitHub if n
 
 ---
 
+## Auto-deploy
+
+Render **auto-deploys** when you push to GitHub. No extra setup needed.
+
+**One-command deploy:**
+```bash
+npm run deploy
+```
+This stages, commits, and pushes your changes. Use a custom message:
+```bash
+npm run deploy -- "Redesign UI"
+```
+
+**Check Render settings:** Dashboard → Your Service → Settings → Build & Deploy → ensure **Auto-Deploy** is set to **Yes**.
+
+---
+
 ## Done
 
 Render will give you a URL like:

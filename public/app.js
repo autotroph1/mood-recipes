@@ -6,6 +6,11 @@ const getRecipeBtn = document.getElementById('get-recipe-btn');
 const getRecipeBtnActive = document.getElementById('get-recipe-btn-active');
 const backBtn = document.getElementById('back-btn');
 const newRecipeBtn = document.getElementById('new-recipe-btn');
+const backFromRecipeBtn = document.getElementById('back-from-recipe-btn');
+const tabIngredients = document.getElementById('tab-ingredients');
+const tabInstructions = document.getElementById('tab-instructions');
+const tabIngredientsContent = document.getElementById('tab-ingredients-content');
+const tabInstructionsContent = document.getElementById('tab-instructions-content');
 
 let currentMood = null;
 let currentMealType = null;
@@ -39,6 +44,13 @@ function updateGetRecipeButton() {
   getRecipeBtnActive.disabled = !bothSelected;
 }
 
+function getButtonClasses(selected, base = 'btn-mood') {
+  const baseClasses = 'px-4 py-2.5 rounded-xl font-medium text-sm transition';
+  const unselected = 'bg-[#F0F0F0] text-[#1D1F25] hover:bg-[#E5E5E5]';
+  const selectedClasses = 'bg-[#F3EFFF] text-[#7D55FA] font-semibold border border-[#7D55FA]';
+  return `${base} ${baseClasses} ${selected ? selectedClasses : unselected}`;
+}
+
 async function loadOptions() {
   const [moodsRes, mealTypesRes] = await Promise.all([
     fetch('/api/moods'),
@@ -48,23 +60,23 @@ async function loadOptions() {
   const mealTypes = await mealTypesRes.json();
 
   moodButtons.innerHTML = moods.map(mood => `
-    <button class="mood-btn px-4 py-2 rounded-lg bg-amber-200 hover:bg-amber-300 text-amber-900 font-medium transition ${currentMood === mood ? 'selected ring-2 ring-amber-500 ring-offset-2' : ''}" data-mood="${mood}">
+    <button class="mood-btn ${getButtonClasses(currentMood === mood)}" data-mood="${mood}">
       ${moodLabels[mood] || mood}
     </button>
   `).join('');
 
   mealTypeButtons.innerHTML = mealTypes.map(type => `
-    <button class="meal-type-btn px-4 py-2 rounded-lg bg-amber-200 hover:bg-amber-300 text-amber-900 font-medium transition ${currentMealType === type ? 'selected ring-2 ring-amber-500 ring-offset-2' : ''}" data-meal-type="${type}">
+    <button class="meal-type-btn ${getButtonClasses(currentMealType === type)}" data-meal-type="${type}">
       ${mealTypeLabels[type] || type}
     </button>
   `).join('');
 
-  const selectedClass = 'selected ring-2 ring-amber-500 ring-offset-2';
   moodButtons.querySelectorAll('.mood-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentMood = btn.dataset.mood;
-      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected', 'ring-2', 'ring-amber-500', 'ring-offset-2'));
-      btn.classList.add(...selectedClass.split(' '));
+      moodButtons.querySelectorAll('.mood-btn').forEach(b => {
+        b.className = getButtonClasses(b.dataset.mood === currentMood, 'mood-btn');
+      });
       updateGetRecipeButton();
     });
   });
@@ -72,8 +84,9 @@ async function loadOptions() {
   mealTypeButtons.querySelectorAll('.meal-type-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentMealType = btn.dataset.mealType;
-      document.querySelectorAll('.meal-type-btn').forEach(b => b.classList.remove('selected', 'ring-2', 'ring-amber-500', 'ring-offset-2'));
-      btn.classList.add(...selectedClass.split(' '));
+      mealTypeButtons.querySelectorAll('.meal-type-btn').forEach(b => {
+        b.className = getButtonClasses(b.dataset.mealType === currentMealType, 'meal-type-btn');
+      });
       updateGetRecipeButton();
     });
   });
@@ -106,6 +119,12 @@ function showRecipe(recipe) {
   excludedIds.push(recipe.id);
   selectStep.classList.add('hidden');
   recipeStep.classList.remove('hidden');
+
+  // Reset to Ingredients tab
+  tabIngredients.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#7D55FA] text-white';
+  tabInstructions.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#F0F0F0] text-[#1D1F25]';
+  tabIngredientsContent.classList.remove('hidden');
+  tabInstructionsContent.classList.add('hidden');
 }
 
 function getRecipe() {
@@ -128,8 +147,24 @@ function goBack() {
   selectStep.classList.remove('hidden');
 }
 
+// Tab switching
+tabIngredients.addEventListener('click', () => {
+  tabIngredients.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#7D55FA] text-white';
+  tabInstructions.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#F0F0F0] text-[#1D1F25]';
+  tabIngredientsContent.classList.remove('hidden');
+  tabInstructionsContent.classList.add('hidden');
+});
+
+tabInstructions.addEventListener('click', () => {
+  tabInstructions.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#7D55FA] text-white';
+  tabIngredients.className = 'tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#F0F0F0] text-[#1D1F25]';
+  tabInstructionsContent.classList.remove('hidden');
+  tabIngredientsContent.classList.add('hidden');
+});
+
 getRecipeBtnActive.addEventListener('click', getRecipe);
 backBtn.addEventListener('click', goBack);
 newRecipeBtn.addEventListener('click', getNewRecipe);
+backFromRecipeBtn.addEventListener('click', goBack);
 
 loadOptions();

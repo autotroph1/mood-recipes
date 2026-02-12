@@ -7,57 +7,83 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Source Sans 3', sans-serif; }
-    h1 { font-family: 'Playfair Display', serif; }
+    :root {
+      --purple: #7D55FA;
+      --purple-light: #F3EFFF;
+      --purple-dark: #6B46E0;
+      --dark: #1D1F25;
+      --grey: #859184;
+      --grey-light: #F0F0F0;
+      --white: #FFFFFF;
+    }
+    body { font-family: 'Work Sans', sans-serif; background: var(--white); color: var(--dark); }
+    .btn-mood { transition: all 0.2s; }
+    .btn-mood.selected { background: var(--purple-light); color: var(--purple); font-weight: 600; border: 1.5px solid var(--purple); }
   </style>
 </head>
-<body class="min-h-screen bg-amber-50">
-  <div class="max-w-2xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-bold text-amber-900 text-center mb-2">Mood Recipes</h1>
-    <p class="text-amber-700 text-center mb-10">Pick your mood and meal type, get a recipe</p>
+<body class="min-h-screen bg-white" style="background: linear-gradient(180deg, #F8F5FF 0%, #FFFFFF 25%);">
+  <div class="max-w-xl mx-auto px-5 py-8 pb-24">
+    <!-- Header -->
+    <div class="mb-6">
+      <p class="text-sm text-[#859184] mb-1">Hi! Welcome</p>
+      <h1 class="text-2xl font-bold text-[#1D1F25] leading-tight">What's On Your Plate Today?</h1>
+    </div>
 
-    <div id="select-step" class="mb-10">
-      <div class="mb-8">
-        <p class="text-amber-800 font-semibold mb-3">How are you feeling?</p>
+    <!-- Selection step -->
+    <div id="select-step">
+      <!-- Mood section -->
+      <div class="mb-6">
+        <p class="text-sm font-semibold text-[#1D1F25] mb-3">How are you feeling?</p>
         <div class="flex flex-wrap gap-2" id="mood-buttons"></div>
       </div>
-      <div class="mb-8">
-        <p class="text-amber-800 font-semibold mb-3">What kind of meal?</p>
+      <!-- Meal type section -->
+      <div class="mb-6">
+        <p class="text-sm font-semibold text-[#1D1F25] mb-3">What kind of meal?</p>
         <div class="flex flex-wrap gap-2" id="meal-type-buttons"></div>
       </div>
-      <button id="get-recipe-btn" disabled class="w-full py-3 bg-amber-400 text-amber-700 font-semibold rounded-lg cursor-not-allowed opacity-60">
+      <!-- CTA -->
+      <button id="get-recipe-btn" disabled class="w-full py-3.5 bg-[#F0F0F0] text-[#859184] font-semibold rounded-xl cursor-not-allowed text-base">
         Select mood and meal type above
       </button>
-      <button id="get-recipe-btn-active" class="hidden w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition">
+      <button id="get-recipe-btn-active" class="hidden w-full py-3.5 bg-[#7D55FA] hover:bg-[#6B46E0] text-white font-semibold rounded-xl transition text-base shadow-sm">
         Get my recipe
       </button>
     </div>
 
+    <!-- Recipe step -->
     <div id="recipe-step" class="hidden">
-      <button id="back-btn" class="text-amber-700 hover:text-amber-900 font-medium mb-6 flex items-center gap-2">
-        ← Change mood or meal type
+      <button id="back-btn" class="text-[#7D55FA] hover:text-[#6B46E0] font-medium mb-5 flex items-center gap-1.5 text-sm">
+        <span>←</span> Change mood or meal type
       </button>
-      <div id="recipe-card" class="bg-white rounded-2xl shadow-lg overflow-hidden border border-amber-100">
+      <div id="recipe-card" class="bg-white rounded-2xl shadow-md overflow-hidden border border-[#F0F0F0]">
         <div class="relative">
-          <img id="recipe-image" src="" alt="" class="w-full h-64 object-cover">
-          <p id="recipe-image-credit" class="absolute bottom-2 right-2 text-xs text-white/90 bg-black/40 px-2 py-1 rounded"></p>
+          <img id="recipe-image" src="" alt="" class="w-full h-56 object-cover">
+          <p id="recipe-image-credit" class="absolute bottom-2 right-2 text-[10px] text-white/95 bg-black/50 px-2 py-0.5 rounded-md"></p>
         </div>
-        <div class="p-8">
-        <h2 id="recipe-name" class="text-2xl font-bold text-amber-900 mb-2"></h2>
-        <p id="recipe-desc" class="text-amber-700 mb-6"></p>
-        <div class="mb-6">
-          <h3 class="font-semibold text-amber-900 mb-2">Ingredients</h3>
-          <p id="recipe-ingredients" class="text-amber-800 whitespace-pre-line"></p>
-        </div>
-        <div class="mb-8">
-          <h3 class="font-semibold text-amber-900 mb-2">Instructions</h3>
-          <p id="recipe-instructions" class="text-amber-800 whitespace-pre-line"></p>
-        </div>
-        <button id="new-recipe-btn" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition">
-          Get another recipe
-        </button>
+        <div class="p-6">
+          <h2 id="recipe-name" class="text-xl font-bold text-[#1D1F25] mb-1"></h2>
+          <p id="recipe-desc" class="text-sm text-[#859184] mb-5"></p>
+          <!-- Tabs -->
+          <div class="flex gap-2 mb-4">
+            <button id="tab-ingredients" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#7D55FA] text-white">Ingredients</button>
+            <button id="tab-instructions" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#F0F0F0] text-[#1D1F25]">Instructions</button>
+          </div>
+          <div id="tab-ingredients-content" class="mb-6">
+            <p id="recipe-ingredients" class="text-[#1D1F25] text-sm whitespace-pre-line leading-relaxed"></p>
+          </div>
+          <div id="tab-instructions-content" class="hidden mb-6">
+            <p id="recipe-instructions" class="text-[#1D1F25] text-sm whitespace-pre-line leading-relaxed"></p>
+          </div>
+          <div class="flex gap-3">
+            <button id="new-recipe-btn" class="flex-1 py-3.5 bg-[#7D55FA] hover:bg-[#6B46E0] text-white font-semibold rounded-xl transition text-sm">
+              Get another recipe
+            </button>
+            <button id="back-from-recipe-btn" class="px-5 py-3.5 bg-white border border-[#E5E5E5] text-[#1D1F25] font-medium rounded-xl transition text-sm hover:bg-[#F5F5F5]">
+              Back
+            </button>
+          </div>
         </div>
       </div>
     </div>
